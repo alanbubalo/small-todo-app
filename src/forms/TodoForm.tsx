@@ -8,7 +8,7 @@ import { TodoSchema, type TodoSchemaType } from "../schemas/TodoSchema";
 
 interface ITodoFormProps {
   initData?: Todo;
-  onSubmit: (data: Todo) => void;
+  onSubmit: (data: TodoSchemaType) => void;
   onDelete?: (id: string) => void;
 }
 
@@ -26,12 +26,7 @@ export const TodoForm = ({ initData, onSubmit, onDelete }: ITodoFormProps) => {
   });
 
   const onFormSubmit: SubmitHandler<TodoSchemaType> = (data) => {
-    const todo = {
-      ...(initData ?? {}),
-      ...data,
-    } as Todo;
-
-    onSubmit(todo);
+    onSubmit(data);
     navigate("/");
   };
 

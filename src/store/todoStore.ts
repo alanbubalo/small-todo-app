@@ -24,14 +24,13 @@ export const useTodoStore = create<TodoListState>()((set, get) => ({
 
     return newTodo;
   },
-  updateTodo: (updatedTodo) => {
+  updateTodo: (updatedTodo, id) => {
     set((state) => {
-      const updatedTodoList =
-        updatedTodo.id !== ""
-          ? state.todoList.map((todo) =>
-              todo.id === updatedTodo.id ? updatedTodo : todo
-            )
-          : state.todoList;
+      const updatedTodoList = id
+        ? state.todoList.map((todo) =>
+            todo.id === id ? { ...todo, updatedTodo } : todo
+          )
+        : state.todoList;
       localStorage.setItem("todoList", JSON.stringify(updatedTodoList));
 
       return { todoList: updatedTodoList };

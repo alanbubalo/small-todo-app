@@ -1,4 +1,5 @@
 import type { Dayjs } from "dayjs";
+import type { TodoSchemaType } from "../schemas/TodoSchema";
 
 export type State = "pending" | "in_progress" | "done";
 
@@ -12,7 +13,7 @@ export interface Todo {
 export interface TodoListState {
   todoList: Todo[];
   getTodoById: (id?: string) => Todo | undefined;
-  createTodo: (todo: Todo) => void;
-  updateTodo: (todo: Todo) => void;
+  createTodo: (todo: TodoSchemaType) => void;
+  updateTodo: (todo: TodoSchemaType, id?: string) => void;
   deleteTodo: (id?: string) => void;
 }
