@@ -21,28 +21,28 @@ export const useTodoStore = create<TodoListState>()((set, get) => ({
 
       return { todoList: updatedTodoList };
     });
-
-    return newTodo;
   },
   updateTodo: (updatedTodo, id) => {
+    if (!id) {
+      throw new Error("Cannot update todo without id");
+    }
+
     set((state) => {
-      const updatedTodoList = id
-        ? state.todoList.map((todo) =>
-            todo.id === id ? { ...todo, updatedTodo } : todo
-          )
-        : state.todoList;
+      const updatedTodoList = state.todoList.map((todo) =>
+        todo.id === id ? { ...todo, ...updatedTodo } : todo
+      );
       localStorage.setItem("todoList", JSON.stringify(updatedTodoList));
 
       return { todoList: updatedTodoList };
     });
-
-    return updatedTodo;
   },
   deleteTodo: (id) => {
+    if (!id) {
+      throw new Error("Cannot delete todo without id");
+    }
+
     set((state) => {
-      const updatedTodoList = id
-        ? state.todoList.filter((todo) => todo.id !== id)
-        : state.todoList;
+      const updatedTodoList = state.todoList.filter((todo) => todo.id !== id);
       localStorage.setItem("todoList", JSON.stringify(updatedTodoList));
 
       return { todoList: updatedTodoList };
