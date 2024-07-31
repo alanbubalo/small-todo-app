@@ -2,12 +2,26 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import { Link, useParams } from "react-router-dom";
 import { TodoForm } from "../../forms/TodoForm";
 import { useTodoStore } from "../../store/todoStore";
+import { PageNotFound } from "../PageNotFound.tsx";
+import { isValid } from "ulidx";
+
+type TodoParams = {
+  todoId: string;
+};
 
 export const EditTodoScreen = () => {
-  const params = useParams();
+  const { todoId } = useParams<TodoParams>();
   const { updateTodo, getTodoById, deleteTodo } = useTodoStore();
 
-  const todo = getTodoById(params.todoId);
+  if (!todoId || !isValid(todoId)) {
+    return <PageNotFound />;
+  }
+
+  const todo = getTodoById(todoId);
+
+  if (!todo) {
+    return <PageNotFound />;
+  }
 
   return (
     <div className="flex flex-col gap-4 justify-center">
@@ -19,7 +33,7 @@ export const EditTodoScreen = () => {
       </Link>
       <TodoForm
         initData={todo}
-        onSubmit={(newTodo) => updateTodo(newTodo, todo?.id)}
+        onSubmit={(newTodo) => updateTodo(newTodo, todoId)}
         onDelete={deleteTodo}
       />
     </div>

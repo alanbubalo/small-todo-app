@@ -12,8 +12,8 @@ export interface Todo {
 
 export interface TodoListState {
   todoList: Todo[];
-  getTodoById: (id?: string) => Todo | undefined;
+  getTodoById: (id: string) => Todo | undefined;
   createTodo: (todo: TodoSchemaType) => void;
-  updateTodo: (todo: TodoSchemaType, id?: string) => void;
-  deleteTodo: (id?: string) => void;
+  updateTodo: (todo: TodoSchemaType, id: string) => void;
+  deleteTodo: (id: string) => void;
 }

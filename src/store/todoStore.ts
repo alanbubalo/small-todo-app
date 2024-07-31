@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { create } from "zustand";
+import { ulid } from "ulidx";
 import type { Todo, TodoListState } from "../types/todo";
 
 export const useTodoStore = create<TodoListState>()((set, get) => ({
@@ -9,7 +10,7 @@ export const useTodoStore = create<TodoListState>()((set, get) => ({
   },
   createTodo: (todo) => {
     const newTodo: Todo = {
-      id: Math.random().toString(36).slice(2, 9),
+      id: ulid(),
       created_at: dayjs(),
       description: todo.description,
       state: "pending",
@@ -23,13 +24,13 @@ export const useTodoStore = create<TodoListState>()((set, get) => ({
     });
   },
   updateTodo: (updatedTodo, id) => {
-    if (!id) {
-      throw new Error("Cannot update todo without id");
-    }
+    // if (!id) {
+    //   throw new Error("Cannot update todo without id");
+    // }
 
     set((state) => {
       const updatedTodoList = state.todoList.map((todo) =>
-        todo.id === id ? { ...todo, ...updatedTodo } : todo
+        todo.id === id ? { ...todo, ...updatedTodo } : todo,
       );
       localStorage.setItem("todoList", JSON.stringify(updatedTodoList));
 
@@ -37,9 +38,9 @@ export const useTodoStore = create<TodoListState>()((set, get) => ({
     });
   },
   deleteTodo: (id) => {
-    if (!id) {
-      throw new Error("Cannot delete todo without id");
-    }
+    // if (!id) {
+    //   throw new Error("Cannot delete todo without id");
+    // }
 
     set((state) => {
       const updatedTodoList = state.todoList.filter((todo) => todo.id !== id);
