@@ -1,5 +1,7 @@
 import { useRef } from "react";
-import { useDebounce } from "../hooks/useDebounce";
+import { debounce } from "throttle-debounce";
+import { TextInput } from "./TextInput";
+import { Select } from "./Select";
 
 interface ISearchProps {
   searchQuery: string;
@@ -19,21 +21,19 @@ export const Search = ({
     searchFn(inputRef.current?.value ?? "", selectRef.current?.value ?? "");
   };
 
-  const debouncedOnChange = useDebounce(handleSearch, 500);
-
   return (
     <div className="flex gap-3 items-stretch">
-      <input
+      <TextInput
         ref={inputRef}
-        type="text"
-        className="w-full border border-zinc-500 bg-zinc-200/10 text-zinc-50 focus:outline-none px-4 py-2 rounded-md"
-        onChange={debouncedOnChange}
+        name="search"
+        onChange={debounce(500, handleSearch)}
         defaultValue={searchQuery}
         placeholder="Search..."
       />
-      <select
+      <Select
         ref={selectRef}
-        className="w-56 border border-zinc-500 bg-zinc-200/10 text-zinc-50 focus:outline-none px-4 py-2 rounded-md"
+        name="state"
+        className="w-56"
         onChange={handleSearch}
         defaultValue={filterState}
       >
@@ -41,7 +41,7 @@ export const Search = ({
         <option value="pending">Pending</option>
         <option value="in_progress">In progress</option>
         <option value="done">Done</option>
-      </select>
+      </Select>
     </div>
   );
 };
