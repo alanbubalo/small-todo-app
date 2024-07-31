@@ -4,9 +4,33 @@ import { ulid } from "ulidx";
 import type { Todo, TodoListState } from "../types/todo";
 
 export const useTodoStore = create<TodoListState>()((set, get) => ({
-  todoList: JSON.parse(localStorage.getItem("todoList") ?? "[]") as Todo[],
+  todoList: [] as Todo[],
+  getTodoList: () => {
+    return JSON.parse(localStorage.getItem("todoList") ?? "[]") as Todo[];
+  },
   getTodoById: (id) => {
-    return get().todoList.find((item) => item.id === id);
+    return get()
+      .getTodoList()
+      .find((item) => item.id === id);
+  },
+  getFilteredTodoList: (searchTerm, filterState) => {
+    return get()
+      .getTodoList()
+      .filter((todo) => {
+        const lowerCaseSearchTerm = searchTerm.toLowerCase();
+
+        return (
+          (filterState &&
+          (filterState === "pending" ||
+            filterState === "in_progress" ||
+            filterState === "done")
+            ? todo.state === filterState
+            : true) &&
+          (todo.description.toLowerCase().includes(lowerCaseSearchTerm) ||
+            todo.created_by.toLowerCase().includes(lowerCaseSearchTerm) ||
+            todo.assigned_to.toLowerCase().includes(lowerCaseSearchTerm))
+        );
+      });
   },
   createTodo: (todo) => {
     const newTodo: Todo = {
@@ -17,33 +41,31 @@ export const useTodoStore = create<TodoListState>()((set, get) => ({
     };
 
     set((state) => {
-      const updatedTodoList = [...state.todoList, newTodo];
+      const updatedTodoList = [...state.getTodoList(), newTodo];
       localStorage.setItem("todoList", JSON.stringify(updatedTodoList));
 
       return { todoList: updatedTodoList };
     });
   },
   updateTodo: (updatedTodo, id) => {
-    // if (!id) {
-    //   throw new Error("Cannot update todo without id");
-    // }
-
     set((state) => {
-      const updatedTodoList = state.todoList.map((todo) =>
-        todo.id === id ? { ...todo, ...updatedTodo } : todo
-      );
+      const updatedTodoList = state
+        .getTodoList()
+        .map((todo) =>
+          todo.id === id
+            ? { ...todo, ...updatedTodo, updated_at: dayjs() }
+            : todo
+        );
       localStorage.setItem("todoList", JSON.stringify(updatedTodoList));
 
       return { todoList: updatedTodoList };
     });
   },
   deleteTodo: (id) => {
-    // if (!id) {
-    //   throw new Error("Cannot delete todo without id");
-    // }
-
     set((state) => {
-      const updatedTodoList = state.todoList.filter((todo) => todo.id !== id);
+      const updatedTodoList = state
+        .getTodoList()
+        .filter((todo) => todo.id !== id);
       localStorage.setItem("todoList", JSON.stringify(updatedTodoList));
 
       return { todoList: updatedTodoList };

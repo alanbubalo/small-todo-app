@@ -24,9 +24,9 @@ export const MainRouter = () => {
             { path: "/list", element: <TodoListScreen /> },
             { path: "/create", element: <CreateTodoScreen /> },
             { path: "/:todoId", element: <EditTodoScreen /> },
-            { path: "*", element: <PageNotFound /> },
           ],
         },
+        { path: "*", element: <PageNotFound /> },
       ])}
     />
   );

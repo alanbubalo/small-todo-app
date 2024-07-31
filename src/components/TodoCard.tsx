@@ -16,7 +16,7 @@ export const TodoCard = ({ todo }: { todo: Todo }) => {
 
   return (
     <div className="w-full rounded-sm p-3 flex flex-row justify-between">
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-2">
         <div className="flex flex-col gap-1">
           <div className="flex flex-row gap-3 items-center">
             <p>{todo.description}</p>
@@ -27,7 +27,20 @@ export const TodoCard = ({ todo }: { todo: Todo }) => {
             </span>
           </div>
           <p className="text-zinc-400 text-sm">
-            {dayjs(todo.created_at).format("llll")}
+            {dayjs(todo.updated_at).diff(dayjs(todo.created_at)) !== 0 ? (
+              <span>Updated at {dayjs(todo.updated_at).format("llll")}</span>
+            ) : (
+              dayjs(todo.created_at).format("llll")
+            )}
+          </p>
+        </div>
+        <div className="flex flex-col gap-1">
+          <p className="text-sm">
+            <span className="text-zinc-400">Created by</span> {todo.created_by}
+          </p>
+          <p className="text-sm">
+            <span className="text-zinc-400">Assigned to</span>{" "}
+            {todo.assigned_to}
           </p>
         </div>
       </div>

@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../components/Button";
 import type { Todo } from "../types/todo";
 import { TodoSchema, type TodoSchemaType } from "../schemas/TodoSchema";
-import { StatePicker } from "../components/StatePicker";
+import { Select } from "../components/Select";
 import { TextInput } from "../components/TextInput";
 
 interface ITodoFormProps {
@@ -39,6 +39,11 @@ export const TodoForm = ({ initData, onSubmit, onDelete }: ITodoFormProps) => {
     }
   };
 
+  const description = register("description");
+  const state = register("state");
+  const createdBy = register("created_by");
+  const assignedTo = register("assigned_to");
+
   return (
     <form
       onSubmit={handleSubmit(onFormSubmit)}
@@ -46,34 +51,48 @@ export const TodoForm = ({ initData, onSubmit, onDelete }: ITodoFormProps) => {
     >
       <div className="grid grid-cols-2 gap-3">
         <TextInput
-          label="Description"
-          name="description"
+          ref={description.ref}
           required
+          label="Description"
+          name={description.name}
           defaultValue={initData?.description ?? ""}
           errors={errors.description}
-          register={register}
+          onChange={description.onChange}
+          onBlur={description.onBlur}
         />
-        <StatePicker
+        <Select
+          ref={state.ref}
+          label="State"
+          name={state.name}
           defaultValue={initData?.state ?? "pending"}
-          isEdit={isEdit}
+          disabled={!isEdit}
           errors={errors.state}
-          register={register}
-        />
+          onChange={state.onChange}
+          onBlur={state.onBlur}
+        >
+          <option value="pending">Pending</option>
+          <option value="in_progress">In progress</option>
+          <option value="done">Done</option>
+        </Select>
         <TextInput
+          ref={createdBy.ref}
           label="Created by"
-          name="created_by"
+          name={createdBy.name}
           required
           defaultValue={initData?.created_by ?? ""}
           errors={errors.created_by}
-          register={register}
+          onChange={createdBy.onChange}
+          onBlur={createdBy.onBlur}
         />
         <TextInput
+          ref={assignedTo.ref}
           label="Assigned to"
-          name="assigned_to"
+          name={assignedTo.name}
           required
           defaultValue={initData?.assigned_to ?? ""}
           errors={errors.assigned_to}
-          register={register}
+          onChange={assignedTo.onChange}
+          onBlur={assignedTo.onBlur}
         />
       </div>
       <div className="flex gap-3">
