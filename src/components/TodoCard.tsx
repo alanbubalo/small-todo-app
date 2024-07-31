@@ -3,14 +3,15 @@ import { MdEdit } from "react-icons/md";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import type { Todo } from "../types/todo";
+import { TodoState } from "../enums/todoState";
 
 export const TodoCard = ({ todo }: { todo: Todo }) => {
   dayjs.extend(localizedFormat);
 
   const stateClasses = {
-    pending: "bg-zinc-400 text-zinc-950",
-    in_progress: "bg-blue-400 text-blue-950",
-    done: "bg-green-400 text-green-950",
+    [TodoState.PENDING]: "bg-zinc-400 text-zinc-950",
+    [TodoState.IN_PROGRESS]: "bg-blue-400 text-blue-950",
+    [TodoState.DONE]: "bg-green-400 text-green-950",
   };
 
   return (

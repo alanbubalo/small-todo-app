@@ -1,13 +1,15 @@
 import type { Dayjs } from "dayjs";
 import type { TodoSchemaType } from "../schemas/TodoSchema";
-
-export type State = "pending" | "in_progress" | "done";
+import type { TTodoState } from "../enums/todoState";
 
 export interface Todo {
   id: string;
-  state: State;
+  state: TTodoState;
   description: string;
+  created_by: string;
+  assigned_to: string;
   created_at: Dayjs;
+  updated_at: Dayjs;
 }
 
 export interface TodoListState {
