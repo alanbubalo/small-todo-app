@@ -19,11 +19,12 @@ export const MainRouter = () => {
           children: [
             {
               index: true,
-              loader: async () => redirect("/list"),
+              loader: async () => redirect("/todo/list"),
             },
-            { path: "/list", element: <TodoListScreen /> },
-            { path: "/create", element: <CreateTodoScreen /> },
-            { path: "/:todoId", element: <EditTodoScreen /> },
+            { path: "/todo", loader: async () => redirect("/todo/list") },
+            { path: "/todo/list", element: <TodoListScreen /> },
+            { path: "/todo/create", element: <CreateTodoScreen /> },
+            { path: "/todo/edit/:todoId", element: <EditTodoScreen /> },
           ],
         },
         { path: "*", element: <PageNotFound /> },
