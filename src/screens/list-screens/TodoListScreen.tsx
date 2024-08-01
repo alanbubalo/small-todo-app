@@ -10,11 +10,11 @@ export const TodoListScreen = () => {
   const { getFilteredTodoList } = useTodoStore();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const validatedSearchparams = getValidatedTodoListParams(searchParams);
+  const validatedSearchParams = getValidatedTodoListParams(searchParams);
 
   const todoList = getFilteredTodoList(
-    validatedSearchparams.search,
-    validatedSearchparams.state
+    validatedSearchParams.search,
+    validatedSearchParams.state
   );
 
   const search = (search: string, state: string) => {
@@ -27,8 +27,8 @@ export const TodoListScreen = () => {
         <Button>Create Todo</Button>
       </Link>
       <Search
-        filterState={validatedSearchparams.state}
-        searchQuery={validatedSearchparams.search}
+        filterState={validatedSearchParams.state}
+        searchQuery={validatedSearchParams.search}
         searchFn={search}
       />
       <div className="flex flex-col gap-2 divide-y divide-zinc-600">

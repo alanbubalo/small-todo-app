@@ -13,23 +13,29 @@ export const useTodoStore = create<TodoListState>()((set, get) => ({
       .getTodoList()
       .find((item) => item.id === id);
   },
-  getFilteredTodoList: (searchTerm, filterState) => {
+  getFilteredTodoList: (search, state) => {
     return get()
       .getTodoList()
       .filter((todo) => {
-        const lowerCaseSearchTerm = searchTerm.toLowerCase();
+        const lowerCaseSearch = search.toLowerCase();
 
-        return (
-          (filterState &&
-          (filterState === "pending" ||
-            filterState === "in_progress" ||
-            filterState === "done")
-            ? todo.state === filterState
-            : true) &&
-          (todo.description.toLowerCase().includes(lowerCaseSearchTerm) ||
-            todo.created_by.toLowerCase().includes(lowerCaseSearchTerm) ||
-            todo.assigned_to.toLowerCase().includes(lowerCaseSearchTerm))
-        );
+        const isStateAll = state === "all";
+        const searchMatchesDescription = todo.description
+          .toLowerCase()
+          .includes(lowerCaseSearch);
+        const searchMatchesCreatedBy = todo.created_by
+          .toLowerCase()
+          .includes(lowerCaseSearch);
+        const searchMatchesAssignedTo = todo.assigned_to
+          .toLowerCase()
+          .includes(lowerCaseSearch);
+
+        const isSearchMatchingAny =
+          searchMatchesDescription ||
+          searchMatchesCreatedBy ||
+          searchMatchesAssignedTo;
+
+        return (isStateAll || todo.state === state) && isSearchMatchingAny;
       });
   },
   createTodo: (todo) => {

@@ -16,7 +16,10 @@ export interface TodoListState {
   todoList: Todo[];
   getTodoList: () => Todo[];
   getTodoById: (id: string) => Todo | undefined;
-  getFilteredTodoList: (searchTerm: string, filterState: string) => Todo[];
+  getFilteredTodoList: (
+    searchTerm: string,
+    filterState: TTodoState | "all"
+  ) => Todo[];
   createTodo: (todo: TodoSchemaType) => void;
   updateTodo: (todo: TodoSchemaType, id: string) => void;
   deleteTodo: (id: string) => void;
