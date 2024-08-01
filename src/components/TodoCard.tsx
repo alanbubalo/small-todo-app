@@ -46,7 +46,7 @@ export const TodoCard = ({ todo }: { todo: Todo }) => {
       </div>
       <Link
         className="hover:text-zinc-300 size-fit flex items-center gap-1"
-        to={`/${todo.id}`}
+        to={`/todo/edit/${todo.id}`}
       >
         <MdEdit /> Edit
       </Link>
